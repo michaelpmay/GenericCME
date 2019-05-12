@@ -5,5 +5,6 @@ classdef (Abstract) AbstractFSP
     infGenerator
   end
   methods (Abstract)
+    run
   end
 end

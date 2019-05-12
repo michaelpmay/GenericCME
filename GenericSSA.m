@@ -11,6 +11,7 @@ classdef GenericSSA < AbstractSSA & GenericCME
       data=obj.formatTrajectory(data)
       data=obj.appendMetaData(data);          
     end
+    
     function [outData]=runTrajectory(obj)
       [state,time]=obj.getInitialLL();
       [time,state]=obj.integrateSSA(time,state)
@@ -21,17 +22,14 @@ classdef GenericSSA < AbstractSSA & GenericCME
     end
     
     function [time,state]=integrateSSA(obj,time,state)
+      waitBar=waitbar(0,'Running SSA');
       while time.getLast<obj.time(end)
         rate=obj.getCumulativeRate(state.getLast,time.getLast);
         time.add(obj.stepToNewTime(time.getLast,rate));
         state.add(obj.stepToNewState(state.getLast,rate));
+        waitbar(time.getLast/obj.time(end),waitBar);
       end
-    end
-    
-    function [data]=formatTrajectory(obj,data)
-      if obj.isTimeSampled()
-        data=obj.parseTrajectory(data.time,data.state);
-      end
+      delete(waitBar)
     end
     
     function [x,t]=getInitialLL(obj)
@@ -64,11 +62,11 @@ classdef GenericSSA < AbstractSSA & GenericCME
         state.set(n,finalState);
     end
     
-    function is=isTimeSampled(obj)
+    function flag=isTimeSampled(obj)
       if (length(obj.time)>2)
-        is=1;
+        flag=1;
       else
-        is=0;
+        flag=0;
       end
     end
     
@@ -86,9 +84,15 @@ classdef GenericSSA < AbstractSSA & GenericCME
       data=GenericData(obj.time,parsedStates);
     end
     
+    function [data]=formatTrajectory(obj,data)
+      if obj.isTimeSampled()
+        data=obj.parseTrajectory(data.time,data.state);
+      end
+    end
+    
     function data=appendMetaData(obj,data)
       data.meta.solver=class(obj);
-      data.meta.timeStamp=date;
+      data.meta.timeStamp=datetime;
       data.meta.time=obj.time;
       data.meta.initialState=obj.initialState;
       data.meta.rxnRate=obj.rxnRate;
