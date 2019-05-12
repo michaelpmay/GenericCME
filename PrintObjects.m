@@ -7,10 +7,10 @@ classdef PrintObjects
       save([directory,'/',obj.generateFileName],'obj')
     end
     function decoration=generateFileDecoration(obj)
-      plainStamp=datestr(now);
-      newStamp=replace(plainStamp,'-','');
-      newStamp=replace(newStamp,':','');
-      timeStamp=replace(newStamp,' ','_');
+      timeStamp=datestr(now);
+      timeStamp=replace(timeStamp,'-','');
+      timeStamp=replace(timeStamp,':','');
+      timeStamp=replace(timeStamp,' ','_');
       randomIntegerString=['_',strrep((num2str(randi(9,1,8))),' ','')];
       decoration=[timeStamp,randomIntegerString];
     end
