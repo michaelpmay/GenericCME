@@ -4,8 +4,6 @@ classdef PrintObjects
       if ~(exist(directory,'dir'))
         mkdir(directory)
       end
-      randomIntegerString=['_',strrep((num2str(randi(9,1,8))),' ','')];
-      timeStamp=replace(replace(replace(datestr(now),'-',''),':',''),' ','');
       save([directory,'/',obj.generateFileName],'obj')
     end
     function decoration=generateFileDecoration(obj)
