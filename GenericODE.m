@@ -15,7 +15,7 @@ classdef GenericODE < AbstractODE & GenericCME
     end
     function data=appendMetaData(obj,data)
       data.meta.solver=class(obj);
-      data.meta.timeStamp=date;
+      data.meta.timeStamp=datetime;
       data.meta.time=obj.time;
       data.meta.initialState=obj.initialState;
       data.meta.rxnRate=obj.rxnRate;

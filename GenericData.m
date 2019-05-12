@@ -1,17 +1,25 @@
 classdef GenericData
   % stores state and time data and has a few simple plot methods
   properties
-    state
     time
+    state
     meta
   end
   methods
-    function obj=GenericData(time,state)
-      obj.state=state;
-      obj.time=time;
+    function obj=GenericData(varargin)
+      if nargin==0
+        
+      elseif nargin==2
+        obj.time=varargin{1};
+        obj.state=varargin{2};
+      else
+        obj.time=varargin{1};
+      	obj.state=varargin{2};
+        obj.meta=varargin{3};
+      end
     end
-    function plotTrajectory(obj)
-      plot(obj.time,obj.state);
+    function drawTrajectory(obj)
+      stairs(obj.time,obj.state');
     end
     function plotHistogram(obj,bins)
       [h,b]=hist(obj.state,bins);
